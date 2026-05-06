@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>Врятувати рядового Раяна</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  overflow: visible;
+  font-family: "Roboto Condensed", Arial, sans-serif;
+}
+
+.scene {
+  width: 980px;
+  height: 760px;
+  position: relative;
+  overflow: visible;
+  padding: 35px 45px 65px 45px;
+  box-sizing: border-box;
+}
+
+.widget {
+  width: 890px;
+  height: 660px;
+  position: relative;
+  color: #f2ead8;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.panel {
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 85% 10%, rgba(255,180,40,.12), transparent 30%),
+    linear-gradient(180deg, rgba(55,58,38,.96), rgba(13,14,10,.98));
+  border: 3px solid rgba(176,142,63,.78);
+  box-shadow:
+    0 28px 44px rgba(0,0,0,.82),
+    0 0 34px rgba(0,0,0,.62),
+    inset 0 0 35px rgba(255,200,80,.08),
+    inset 0 0 0 2px rgba(255,255,255,.05);
+  overflow: hidden;
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255,255,255,.025) 0px,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px,
+      transparent 7px
+    );
+  opacity: .35;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.65), transparent 18%, transparent 82%, rgba(0,0,0,.65)),
+    linear-gradient(180deg, rgba(255,255,255,.07), transparent 18%, rgba(0,0,0,.35));
+  pointer-events: none;
+  z-index: 0;
+}
+
+.header {
+  position: relative;
+  z-index: 2;
+  height: 135px;
+  margin: 18px 24px 0;
+  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(88,83,48,.92), rgba(29,30,20,.96));
+  border: 2px solid rgba(192,156,72,.7);
+  box-shadow:
+    inset 0 0 20px rgba(0,0,0,.65),
+    0 8px 20px rgba(0,0,0,.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.header::before {
+  content: "★";
+  position: absolute;
+  left: 35px;
+  top: 27px;
+  font-size: 74px;
+  color: rgba(240,230,185,.13);
+}
+
+.header::after {
+  content: "▰";
+  position: absolute;
+  right: 36px;
+  top: 35px;
+  font-size: 76px;
+  transform: rotate(-8deg);
+  color: rgba(40,40,32,.75);
+  text-shadow: 34px -15px 0 rgba(30,30,26,.55);
+}
+
+.title {
+  position: relative;
+  z-index: 3;
+}
+
+.title h1 {
+  margin: 0;
+  font-size: 48px;
+  line-height: .95;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #f5ead3;
+  text-shadow:
+    0 4px 0 #3b321e,
+    0 0 18px rgba(255,220,140,.25),
+    0 8px 18px rgba(0,0,0,.85);
+}
+
+.subtitle {
+  margin-top: 14px;
+  font-size: 24px;
+  letter-spacing: 5px;
+  color: #d7a928;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(255,180,35,.35);
+}
+
+.stats {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 135px 135px 170px;
+  gap: 14px;
+  margin: 18px 24px 0;
+}
+
+.card {
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(42,43,28,.96), rgba(17,18,13,.98));
+  border: 2px solid rgba(139,116,63,.75);
+  box-shadow:
+    inset 0 0 22px rgba(0,0,0,.75),
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 8px 20px rgba(0,0,0,.45);
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  align-items: center;
+  padding: 10px 20px 28px 20px;
+  box-sizing: border-box;
+}
+
+/* Нижня кольорова лінія */
+.card::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 11px;
+  height: 4px;
+  border-radius: 99px;
+  background: var(--accent);
+  box-shadow: 0 0 18px var(--accent);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.icon {
+  position: relative;
+  z-index: 2;
+  width: 88px;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 58px;
+  line-height: 1;
+  filter: drop-shadow(0 6px 8px rgba(0,0,0,.7));
+}
+
+.info {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  text-align: center;
+  transform: translateY(-5px);
+}
+
+.label {
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--label);
+  text-shadow: 0 2px 4px rgba(0,0,0,.8);
+  white-space: nowrap;
+  text-align: center;
+}
+
+.value {
+  margin-top: 4px;
+  font-size: 96px;
+  line-height: .78;
+  color: #fff7e8;
+  text-align: center;
+  text-shadow:
+    0 4px 0 rgba(55,44,26,.95),
+    0 0 18px rgba(255,255,255,.18),
+    0 10px 18px rgba(0,0,0,.9);
+}
+
+/* Третій рядок на всю ширину */
+.gold {
+  grid-column: 1 / 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 36px 32px 36px;
+  text-align: center;
+}
+
+.gold .icon {
+  position: relative;
+  z-index: 2;
+  width: 110px;
+  height: 110px;
+  flex: 0 0 110px;
+  font-size: 76px;
+  margin-right: 28px;
+}
+
+.gold .info {
+  position: relative;
+  z-index: 2;
+  flex: 0 1 auto;
+  text-align: center;
+  transform: translateY(-4px);
+}
+
+.gold .label {
+  font-size: 38px;
+  text-align: center;
+}
+
+.gold .value {
+  font-size: 118px;
+  margin-top: 2px;
+  line-height: .78;
+  text-align: center;
+}
+
+.saved {
+  --accent: #8fd050;
+  --label: #8fd050;
+}
+
+.lost {
+  --accent: #e34b38;
+  --label: #ff5548;
+}
+
+.battles {
+  --accent: #d59b22;
+  --label: #f0dfbd;
+}
+
+.efficiency {
+  --accent: #4fb8ff;
+  --label: #69c7ff;
+}
+
+.gold {
+  --accent: #ffc531;
+  --label: #ffc531;
+}
+
+.error {
+  position: absolute;
+  left: 38px;
+  bottom: 12px;
+  z-index: 5;
+  font-size: 18px;
+  color: #ff7777;
+  text-shadow: 0 2px 4px #000;
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="scene">
+  <div class="widget">
+    <div class="panel">
+
+      <div class="header">
+        <div class="title">
+          <h1>Врятувати рядового Раяна</h1>
+          <div class="subtitle">SAXON та Яблучко</div>
+        </div>
+      </div>
+
+      <div class="stats">
+
+        <div class="card saved">
+          <div class="icon">✅</div>
+          <div class="info">
+            <div class="label">Врятовано</div>
+            <div class="value" id="saved">0</div>
+          </div>
+        </div>
+
+        <div class="card lost">
+          <div class="icon">❌</div>
+          <div class="info">
+            <div class="label">Не врятовано</div>
+            <div class="value" id="lost">0</div>
+          </div>
+        </div>
+
+        <div class="card battles">
+          <div class="icon">⚔️</div>
+          <div class="info">
+            <div class="label">К-ть боїв</div>
+            <div class="value" id="battles">0</div>
+          </div>
+        </div>
+
+        <div class="card efficiency">
+          <div class="icon">📈</div>
+          <div class="info">
+            <div class="label">Ефективність</div>
+            <div class="value" id="efficiency">0%</div>
+          </div>
+        </div>
+
+        <div class="card gold">
+          <div class="icon">🪙</div>
+          <div class="info">
+            <div class="label">К-ть золота</div>
+            <div class="value" id="gold">0</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="error" id="errorText">Помилка завантаження Google Таблиці</div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/*
+  Google Sheets:
+
+  I2 = К-ть боїв
+  J2 = К-ть золота / розіграш
+  K2 = Врятовано
+  L2 = Не врятовано
+
+  Ефективність = K2 / I2 * 100
+*/
+
+const SHEET_ID = "17phnEn-NW-OnrZg4DcW65r-Xoq6ScsdVjS5yL0SS3fk";
+const GID = "148786084";
+const RANGE = "I2:L2";
+
+const UPDATE_INTERVAL = 10000;
+
+const els = {
+  battles: document.getElementById("battles"),
+  gold: document.getElementById("gold"),
+  saved: document.getElementById("saved"),
+  lost: document.getElementById("lost"),
+  efficiency: document.getElementById("efficiency"),
+  error: document.getElementById("errorText")
+};
+
+function cleanValue(value) {
+  if (value === null || value === undefined) return "0";
+  return String(value).replace(/\s+/g, "").trim() || "0";
+}
+
+function toNumber(value) {
+  const cleaned = cleanValue(value).replace(",", ".");
+  const number = Number(cleaned);
+  return Number.isFinite(number) ? number : 0;
+}
+
+function formatPercent(value) {
+  if (!Number.isFinite(value)) return "0%";
+  return Math.round(value) + "%";
+}
+
+async function loadSheetData() {
+  const url =
+    `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?` +
+    `gid=${GID}&range=${RANGE}&tqx=out:json&cacheBust=${Date.now()}`;
+
+  try {
+    const response = await fetch(url);
+    const text = await response.text();
+
+    const jsonText = text
+      .replace("/*O_o*/", "")
+      .replace("google.visualization.Query.setResponse(", "")
+      .replace(/\);?\s*$/, "");
+
+    const data = JSON.parse(jsonText);
+    const row = data.table.rows[0];
+
+    if (!row || !row.c) {
+      throw new Error("Немає даних у діапазоні I2:L2");
+    }
+
+    const i2Battles = row.c[0]?.v ?? 0;
+    const j2Gold = row.c[1]?.v ?? 0;
+    const k2Saved = row.c[2]?.v ?? 0;
+    const l2Lost = row.c[3]?.v ?? 0;
+
+    const battlesNumber = toNumber(i2Battles);
+    const savedNumber = toNumber(k2Saved);
+
+    const efficiency =
+      battlesNumber > 0
+        ? (savedNumber / battlesNumber) * 100
+        : 0;
+
+    els.saved.textContent = cleanValue(k2Saved);
+    els.lost.textContent = cleanValue(l2Lost);
+    els.battles.textContent = cleanValue(i2Battles);
+    els.gold.textContent = cleanValue(j2Gold);
+    els.efficiency.textContent = formatPercent(efficiency);
+
+    els.error.style.display = "none";
+
+  } catch (err) {
+    console.error("Google Sheets load error:", err);
+    els.error.style.display = "block";
+  }
+}
+
+loadSheetData();
+setInterval(loadSheetData, UPDATE_INTERVAL);
+</script>
+
+</body>
+</html>
